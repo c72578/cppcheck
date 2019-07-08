@@ -60,7 +60,6 @@ build_script:
   - cd build
   - cmake -DBUILD_TESTS=ON -G"NMake Makefiles" ..
   - nmake
-  - bin/testrunner.exe
   - cd ..
   - ECHO MYQTDIR=%MYQTDIR%
   - 'IF defined MYQTDIR cd gui'
@@ -70,7 +69,8 @@ build_script:
   - 'IF defined MYQTDIR cd ..'
 
 test_script:
-  - build\bin\testrunner.exe
+  - IF "%CONFIGURATION%" == "Debug"   bin\debug\testrunner.exe
+  - IF "%CONFIGURATION%" == "Release" bin\testrunner.exe
 
 artifacts:
   - path: bin
