@@ -70,7 +70,6 @@ build_script:
 
 test_script:
   - DIR build\bin
-  - DIR bin
   - build\bin\testrunner.exe
 
 artifacts:
