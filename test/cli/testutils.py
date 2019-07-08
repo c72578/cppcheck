@@ -45,8 +45,13 @@ def cppcheck(args):
     exe = None
     if os.path.isfile('../../cppcheck.exe'):
         exe = '../../cppcheck.exe'
-    else:
+    elif os.path.isfile('../../../cppcheck.exe'):
+        exe = '../../../cppcheck.exe'
+    elif os.path.isfile('../../cppcheck'):
         exe = '../../cppcheck'
+    else:
+        exe = '../../../cppcheck'
+
     logging.info(exe + ' ' + ' '.join(args))
     p = subprocess.Popen([exe] + args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     comm = p.communicate()
