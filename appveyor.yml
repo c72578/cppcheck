@@ -29,6 +29,7 @@ environment:
       vcvarsall_platform: x64
       PlatformToolset: v120
       MYQTDIR: C:\Qt\5.6\msvc2013_64
+# FIXME: These are disabled for now. They were broken by ae8653612802b41b70424ec9a5eefe8a1178f6d1
 #    - VisualStudioVersion: 14.0
 #      platform: Win32
 #      configuration: Debug
@@ -65,10 +66,12 @@ install:
 build_script:
   - ECHO Building %configuration% %platform% with MSVC %VisualStudioVersion% using %PlatformToolset% PlatformToolset
   - 'CALL "C:\Program Files (x86)\Microsoft Visual Studio %VisualStudioVersion%\VC\vcvarsall.bat" %vcvarsall_platform%'
+  # Visual studio project..
+  - IF %PlatformToolset% == "v120" msbuild "cppcheck.sln" /consoleloggerparameters:Verbosity=minimal /target:Build /property:Configuration="%configuration%";Platform=%platform% /p:PlatformToolset=%PlatformToolset% /maxcpucount /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
   # cmake..
   - mkdir build
   - cd build
-  - cmake -DBUILD_TESTS=OFF -G"NMake Makefiles" ..
+  - cmake -DBUILD_TESTS=ON -G"NMake Makefiles" ..
   - nmake
   - copy bin\cppcheck.exe ..
   - cd ..
@@ -81,9 +84,9 @@ build_script:
   - 'IF defined MYQTDIR cd ..'
 
 test_script:
-  #- build\bin\testrunner.exe -q
-#  - IF EXIST bin\debug\testrunner.exe bin\debug\testrunner.exe
-#  - IF EXIST bin\testrunner.exe bin\testrunner.exe
+  - build\bin\testrunner.exe -q
+  - IF EXIST bin\debug\testrunner.exe bin\debug\testrunner.exe
+  - IF EXIST bin\testrunner.exe bin\testrunner.exe
   - cd test\cli
   - python -m pytest test-helloworld.py
   - python -m pytest test-inline-suppress.py
