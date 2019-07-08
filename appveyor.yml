@@ -69,8 +69,9 @@ build_script:
   - 'IF defined MYQTDIR cd ..'
 
 test_script:
-  - IF "%CONFIGURATION%" == "Debug"   bin\debug\testrunner.exe
-  - IF "%CONFIGURATION%" == "Release" bin\testrunner.exe
+  - DIR build\bin
+  - DIR bin
+  - build\bin\testrunner.exe
 
 artifacts:
   - path: bin
