@@ -53,12 +53,6 @@ environment:
 #      vcvarsall_platform: x64
 #      PlatformToolset: v140
 #      MYQTDIR: C:\Qt\5.11\msvc2015_64
-    - VisualStudioVersion: 15.0
-      platform: x64
-      configuration: Release
-      vcvarsall_platform: x64
-      PlatformToolset: v141
-      MYQTDIR: C:\Qt\5.12.2\msvc2017_64
 
 install:
   - pip install pytest
@@ -67,7 +61,7 @@ build_script:
   - ECHO Building %configuration% %platform% with MSVC %VisualStudioVersion% using %PlatformToolset% PlatformToolset
   - 'CALL "C:\Program Files (x86)\Microsoft Visual Studio %VisualStudioVersion%\VC\vcvarsall.bat" %vcvarsall_platform%'
   # Visual studio project..
-  - IF %PlatformToolset% == "v120" msbuild "cppcheck.sln" /consoleloggerparameters:Verbosity=minimal /target:Build /property:Configuration="%configuration%";Platform=%platform% /p:PlatformToolset=%PlatformToolset% /maxcpucount /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+  - msbuild "cppcheck.sln" /consoleloggerparameters:Verbosity=minimal /target:Build /property:Configuration="%configuration%";Platform=%platform% /p:PlatformToolset=%PlatformToolset% /maxcpucount /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
   # cmake..
   - mkdir build
   - cd build
