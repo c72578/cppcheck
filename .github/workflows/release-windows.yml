@@ -90,6 +90,8 @@ jobs:
           set PRODUCTVER=%PRODUCTVER:"=%
           echo ProductVersion=%PRODUCTVER%
           msbuild -m cppcheck.wixproj /p:Platform=x64,ProductVersion=%PRODUCTVER%.${{ github.run_number }}
+          cd ..\gui\help
+          powershell.exe -Command "Get-ChildItem online-help.qch | Select-Object Mode, Name, CreationTime, LastWriteTime, LastAccessTime | Format-Table"
 
       - uses: actions/upload-artifact@v2
         with:
